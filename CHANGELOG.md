@@ -26,6 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `MarkdownEditorConfiguration.safeAreaInsets`.
 
 ### Fixed
+- Spell-check red dotted underlines now render in the editor under TextKit 2.
+  `NSTextView`'s automatic spell-mark pass is a no-op for custom
+  `NSTextLayoutFragment` subclasses, so the engine drives `NSSpellChecker`
+  directly on text changes (debounced) and paints the marks in
+  `MarkdownTextLayoutFragment.draw(at:in:)`. The styler also applies
+  `.spellingState: 0` to fenced code blocks and inline `` `code` `` spans,
+  matching the existing convention used for links, wiki-links, LaTeX, and
+  tables. Prose is unaffected.
 - `NativeTextViewWrapper` keeps links clickable and text selectable
   when `isEditable: false`; `isSelectable` is no longer coupled to
   `isEditable`. (#31)
